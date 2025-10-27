@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Wireless Networking Course</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --background-color: #f9f9f9;
+            --text-color: #333;
+            --card-bg: #fff;
+            --header-bg: #fff;
+            --border-color: #ddd;
+            --shadow: 0 2px 15px rgba(0,0,0,0.1);
+            --code-bg: #2d2d2d;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --linux-color: #ff6600;
+            --windows-color: #0078d7;
+        }
+
+        .dark-theme {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --background-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --card-bg: #2d2d2d;
+            --header-bg: #2d2d2d;
+            --border-color: #444;
+            --shadow: 0 2px 15px rgba(0,0,0,0.3);
+            --code-bg: #1a1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--header-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 8px 12px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .dark-theme .theme-toggle:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            overflow-y: auto;
+            height: calc(100vh - 70px);
+            position: sticky;
+            top: 70px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar h2 i {
+            font-size: 1.1rem;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-item {
+            margin-bottom: 8px;
+        }
+
+        .category-item a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-color);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .category-item a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .category-item.active a {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .category-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><path fill="white" d="M10,10 L90,10 L90,90 L10,90 Z M20,20 L80,20 L80,80 L20,80 Z M30,30 L70,30 L70,70 L30,70 Z M40,40 L60,40 L60,60 L40,60 Z"/></svg>');
+        }
+
+        .banner h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .banner p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .author {
+            margin-top: 20px;
+            font-style: italic;
+            font-size: 1rem;
+            position: relative;
+        }
+
+        .content-section {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            scroll-margin-top: 20px;
+        }
+
+        .content-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-section h2 i {
+            font-size: 1.3rem;
+        }
+
+        .content-section h3 {
+            margin: 20px 0 10px;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content-section h3 i {
+            font-size: 1.1rem;
+        }
+
+        .content-section h4 {
+            margin: 15px 0 8px;
+            color: var(--accent-color);
+        }
+
+        .content-section p {
+            margin-bottom: 15px;
+        }
+
+        .content-section ul, .content-section ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .content-section li {
+            margin-bottom: 8px;
+        }
+
+        .protocol-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .protocol-table th, .protocol-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .protocol-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .protocol-table tr:nth-child(even) {
+            background-color: rgba(0,0,0,0.03);
+        }
+
+        .dark-theme .protocol-table tr:nth-child(even) {
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .terminal {
+            background-color: #1a1a1a;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .linux-terminal {
+            background-color: #1a1a1a;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid var(--linux-color);
+        }
+
+        .windows-terminal {
+            background-color: #012456;
+            color: #cccccc;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid var(--windows-color);
+        }
+
+        .note {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning {
+            background-color: rgba(243, 156, 18, 0.1);
+            border-left: 4px solid var(--warning-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .diagram {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: rgba(0,0,0,0.03);
+            border-radius: 5px;
+        }
+
+        .dark-theme .diagram {
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .diagram img {
+            max-width: 100%;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .tool-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        .tool-card p {
+            margin-bottom: 10px;
+        }
+
+        .example-box {
+            background-color: rgba(0,0,0,0.03);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .dark-theme .example-box {
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .command {
+            background-color: var(--code-bg);
+            color: #f8f8f2;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .linux-command {
+            background-color: #333;
+            color: #00ff00;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            display: inline-block;
+            margin: 5px 0;
+            border-left: 3px solid var(--linux-color);
+        }
+
+        .windows-command {
+            background-color: #012456;
+            color: #cccccc;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            display: inline-block;
+            margin: 5px 0;
+            border-left: 3px solid var(--windows-color);
+        }
+
+        .lab-setup {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--success-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .os-comparison {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .os-box {
+            flex: 1;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .linux-box {
+            background-color: rgba(255, 102, 0, 0.1);
+            border-left: 4px solid var(--linux-color);
+        }
+
+        .windows-box {
+            background-color: rgba(0, 120, 215, 0.1);
+            border-left: 4px solid var(--windows-color);
+        }
+
+        .os-box h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--header-bg);
+            border-top: 1px solid var(--border-color);
+            margin-top: 30px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                display: none;
+            }
+
+            .sidebar.active {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .banner h1 {
+                font-size: 2rem;
+            }
+
+            .banner p {
+                font-size: 1rem;
+            }
+
+            .os-comparison {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 15px;
+            }
+            
+            .content-section {
+                padding: 15px;
+            }
+            
+            .banner {
+                padding: 25px;
+            }
+            
+            .banner h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-wifi"></i>
+            <span>Wireless Networking</span>
+        </div>
+        <div class="header-controls">
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon" id="themeIcon"></i>
+                <span id="themeText">Dark Mode</span>
+            </button>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <h2><i class="fas fa-book-open"></i> Course Content</h2>
+            <ul class="category-list">
+                <li class="category-item active"><a href="#intro"><i class="fas fa-play-circle"></i> Introduction</a></li>
+                <li class="category-item"><a href="#networking-fundamentals"><i class="fas fa-network-wired"></i> Networking Fundamentals</a></li>
+                <li class="category-item"><a href="#wireless-tech"><i class="fas fa-broadcast-tower"></i> Wireless Technologies</a></li>
+                <li class="category-item"><a href="#ip-addressing"><i class="fas fa-map-marker-alt"></i> IP Addressing</a></li>
+                <li class="category-item"><a href="#network-protocols"><i class="fas fa-exchange-alt"></i> Network Protocols</a></li>
+                <li class="category-item"><a href="#security"><i class="fas fa-shield-alt"></i> Network Security</a></li>
+                <li class="category-item"><a href="#practical-commands"><i class="fas fa-terminal"></i> Practical Commands</a></li>
+                <li class="category-item"><a href="#tools"><i class="fas fa-tools"></i> Networking Tools</a></li>
+                <li class="category-item"><a href="#troubleshooting"><i class="fas fa-bug"></i> Troubleshooting</a></li>
+                <li class="category-item"><a href="#advanced"><i class="fas fa-rocket"></i> Advanced Concepts</a></li>
+                <li class="category-item"><a href="#labs"><i class="fas fa-flask"></i> Practical Labs</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <section class="banner">
+                <h1>Complete Wireless Networking Course</h1>
+                <p>Master networking fundamentals, wireless technologies, security, and practical tools for ethical hacking and network administration</p>
+                <div class="author">By Aryan Giri</div>
+            </section>
+
+            <section id="intro" class="content-section">
+                <h2><i class="fas fa-play-circle"></i> Introduction to Networking</h2>
+                <p>Welcome to the complete wireless networking course! This comprehensive guide will take you from networking basics to advanced concepts with practical examples and hands-on labs.</p>
+                
+                <div class="note">
+                    <p><strong>Note:</strong> This course is designed for beginners but covers advanced topics that are essential for ethical hacking and network security.</p>
+                </div>
+                
+                <h3><i class="fas fa-target"></i> Course Objectives</h3>
+                <ul>
+                    <li>Understand networking fundamentals and how data travels across networks</li>
+                    <li>Master IP addressing, subnetting, and network protocols</li>
+                    <li>Learn about wireless technologies and their security implications</li>
+                    <li>Gain practical skills with networking tools like Wireshark, Nmap, and Aircrack-ng</li>
+                    <li>Develop troubleshooting skills for common network issues</li>
+                    <li>Prepare for networking certifications and ethical hacking</li>
+                </ul>
+                
+                <h3><i class="fas fa-laptop-code"></i> Lab Environment Setup</h3>
+                <div class="lab-setup">
+                    <p>For the practical components of this course, we recommend setting up the following environment:</p>
+                    <ul>
+                        <li><strong>Kali Linux</strong> - For security testing and ethical hacking tools</li>
+                        <li><strong>VirtualBox/VMware</strong> - For creating virtual lab environments</li>
+                        <li><strong>Wireshark</strong> - For packet analysis</li>
+                        <li><strong>Wireless adapter</strong> - That supports monitor mode (for wireless testing)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="networking-fundamentals" class="content-section">
+                <h2><i class="fas fa-network-wired"></i> Networking Fundamentals</h2>
+                
+                <h3><i class="fas fa-sitemap"></i> What is Computer Networking?</h3>
+                <p>Computer networking is the practice of connecting computers and other devices to share resources and information. When two or more devices communicate with each other, they form a network.</p>
+                
+                <div class="example-box">
+                    <h4>Real-World Example:</h4>
+                    <p>Think of a network like a postal system. Devices have addresses (IP addresses), and data is sent in packages (packets) that are routed through various post offices (routers) to reach their destination.</p>
+                </div>
+                
+                <h3><i class="fas fa-info-circle"></i> Key Networking Concepts</h3>
+                
+                <h4>ISP (Internet Service Provider)</h4>
+                <p>Your ISP is your gateway to the internet. Examples include Comcast, Verizon, Airtel, Jio, etc. They provide you with a public IP address that identifies your network on the internet.</p>
+                
+                <h4>How Data Travels</h4>
+                <ol>
+                    <li>You request a website (e.g., google.com) from your browser</li>
+                    <li>Your device creates a packet with your request</li>
+                    <li>The packet goes to your router</li>
+                    <li>The router sends it to your ISP using your public IP</li>
+                    <li>The ISP routes it through the internet to the destination server</li>
+                    <li>The response follows the reverse path back to your device</li>
+                </ol>
+                
+                <div class="terminal">
+                    # Example of tracing the route to google.com<br>
+                    $ traceroute google.com<br>
+                    traceroute to google.com (142.250.191.78), 30 hops max, 60 byte packets<br>
+                    1  _gateway (192.168.1.1)  1.234 ms  1.456 ms  1.678 ms<br>
+                    2  10.10.10.1 (10.10.10.1)  5.678 ms  5.789 ms  5.890 ms<br>
+                    3  100.64.0.1 (100.64.0.1)  10.123 ms  10.234 ms  10.345 ms<br>
+                    ...<br>
+                    12  google.com (142.250.191.78)  25.678 ms  25.789 ms  25.890 ms
+                </div>
+                
+                <h3><i class="fas fa-project-diagram"></i> Network Types</h3>
+                <table class="protocol-table">
+                    <tr>
+                        <th>Network Type</th>
+                        <th>Scope</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td>LAN (Local Area Network)</td>
+                        <td>Small area (home, office)</td>
+                        <td>Your home Wi-Fi network</td>
+                    </tr>
+                    <tr>
+                        <td>WLAN (Wireless LAN)</td>
+                        <td>Small area, wireless</td>
+                        <td>Wi-Fi network in a coffee shop</td>
+                    </tr>
+                    <tr>
+                        <td>MAN (Metropolitan Area Network)</td>
+                        <td>City-wide</td>
+                        <td>Cable TV network in a city</td>
+                    </tr>
+                    <tr>
+                        <td>WAN (Wide Area Network)</td>
+                        <td>Country/Global</td>
+                        <td>The Internet</td>
+                    </tr>
+                </table>
+            </section>
+
+            <section id="wireless-tech" class="content-section">
+                <h2><i class="fas fa-broadcast-tower"></i> Wireless Technologies</h2>
+                
+                <h3><i class="fas fa-wifi"></i> Wi-Fi Standards</h3>
+                <p>Wi-Fi has evolved through several standards, each offering improvements in speed, range, and security.</p>
+                
+                <table class="protocol-table">
+                    <tr>
+                        <th>Standard</th>
+                        <th>Release Year</th>
+                        <th>Frequency</th>
+                        <th>Max Speed</th>
+                        <th>Key Features</th>
+                    </tr>
+                    <tr>
+                        <td>802.11b</td>
+                        <td>1999</td>
+                        <td>2.4 GHz</td>
+                        <td>11 Mbps</td>
+                        <td>First widely adopted standard</td>
+                    </tr>
+                    <tr>
+                        <td>802.11a</td>
+                        <td>1999</td>
+                        <td>5 GHz</td>
+                        <td>54 Mbps</td>
+                        <td>Less interference, faster than 802.11b</td>
+                    </tr>
+                    <tr>
+                        <td>802.11g</td>
+                        <td>2003</td>
+                        <td>2.4 GHz</td>
+                        <td>54 Mbps</td>
+                        <td>Backward compatible with 802.11b</td>
+                    </tr>
+                    <tr>
+                        <td>802.11n (Wi-Fi 4)</td>
+                        <td>2009</td>
+                        <td>2.4/5 GHz</td>
+                        <td>600 Mbps</td>
+                        <td>MIMO technology, wider channels</td>
+                    </tr>
+                    <tr>
+                        <td>802.11ac (Wi-Fi 5)</td>
+                        <td>2014</td>
+                        <td>5 GHz</td>
+                        <td>3.5 Gbps</td>
+                        <td>Wider channels, more spatial streams</td>
+                    </tr>
+                    <tr>
+                        <td>802.11ax (Wi-Fi 6)</td>
+                        <td>2019</td>
+                        <td>2.4/5/6 GHz</td>
+                        <td>9.6 Gbps</td>
+                        <td>OFDMA, better performance in dense areas</td>
+                    </tr>
+                </table>
+                
+                <h3><i class="fas fa-shield-alt"></i> Wireless Security Protocols</h3>
+                
+                <div class="warning">
+                    <p><strong>Warning:</strong> Older security protocols like WEP are extremely vulnerable and should never be used.</p>
+                </div>
+                
+                <h4>WEP (Wired Equivalent Privacy)</h4>
+                <p><span class="command" style="background-color: var(--accent-color);">INSECURE</span> - Easily cracked within minutes using tools like Aircrack-ng. Uses RC4 encryption with weak initialization vectors.</p>
+                
+                <h4>WPA (Wi-Fi Protected Access)</h4>
+                <p><span class="command" style="background-color: var(--warning-color);">WEAK</span> - Improved over WEP but still vulnerable to attacks like KRACK (Key Reinstallation Attacks). Uses TKIP encryption.</p>
+                
+                <h4>WPA2 (Wi-Fi Protected Access 2)</h4>
+                <p><span class="command" style="background-color: var(--success-color);">SECURE</span> - Currently the most widely used security protocol. Uses AES encryption and is considered secure when using a strong password.</p>
+                
+                <h4>WPA3 (Wi-Fi Protected Access 3)</h4>
+                <p><span class="command" style="background-color: var(--success-color);">MOST SECURE</span> - The latest security protocol that provides individualized data encryption, protection against brute-force attacks, and easier connection for IoT devices.</p>
+                
+                <h3><i class="fas fa-tools"></i> Wireless Network Components</h3>
+                <ul>
+                    <li><strong>Access Point (AP):</strong> Device that allows wireless devices to connect to a wired network</li>
+                    <li><strong>Wireless Router:</strong> Combines AP, router, and often switch functionality</li>
+                    <li><strong>Wireless Network Interface Card (WNIC):</strong> Hardware that enables devices to connect to wireless networks</li>
+                    <li><strong>Antennas:</strong> Used to transmit and receive wireless signals</li>
+                </ul>
+            </section>
+
+            <section id="ip-addressing" class="content-section">
+                <h2><i class="fas fa-map-marker-alt"></i> IP Addressing and Subnetting</h2>
+                
+                <h3><i class="fas fa-compass"></i> What is an IP Address?</h3>
+                <p>An IP address is a unique identifier assigned to each device on a network. It's like a home address for your computer on the internet or local network.</p>
+                
+                <div class="code-block">
+                    # Example IPv4 address<br>
+                    192.168.1.105<br>
+                    <br>
+                    # Breakdown of the address<br>
+                    Network Part: 192.168.1<br>
+                    Host Part: 105<br>
+                    <br>
+                    # Subnet Mask<br>
+                    255.255.255.0<br>
+                    <br>
+                    # This means:<br>
+                    - Network: 192.168.1.0<br>
+                    - First usable IP: 192.168.1.1<br>
+                    - Last usable IP: 192.168.1.254<br>
+                    - Broadcast: 192.168.1.255
+                </div>
+                
+                <h3><i class="fas fa-exchange-alt"></i> IPv4 vs IPv6</h3>
+                <table class="protocol-table">
+                    <tr>
+                        <th>Feature</th>
+                        <th>IPv4</th>
+                        <th>IPv6</th>
+                    </tr>
+                    <tr>
+                        <td>Address Size</td>
+                        <td>32 bits</td>
+                        <td>128 bits</td>
+                    </tr>
+                    <tr>
+                        <td>Address Format</td>
+                        <td>192.168.1.1</td>
+                        <td>2001:0db8:85a3:0000:0000:8a2e:0370:7334</td>
+                    </tr>
+                    <tr>
+                        <td>Available Addresses</td>
+                        <td>~4.3 billion</td>
+                        <td>3.4×10³⁸ (essentially unlimited)</td>
+                    </tr>
+                    <tr>
+                        <td>Security</td>
+                        <td>Optional (IPSec)</td>
+                        <td>Built-in (IPSec)</td>
+                    </tr>
+                </table>
+                
+                <h3><i class="fas fa-sitemap"></i> Subnetting</h3>
+                <p>Subnetting is the process of dividing a network into smaller, more manageable sub-networks. This improves security and performance.</p>
+                
+                <div class="example-box">
+                    <h4>Subnetting Example:</h4>
+                    <p>If you have the network 192.168.1.0/24 (255.255.255.0), you can divide it into two subnets:</p>
+                    <ul>
+                        <li><strong>Subnet 1:</strong> 192.168.1.0/25 (255.255.255.128) - IPs 192.168.1.1 to 192.168.1.126</li>
+                        <li><strong>Subnet 2:</strong> 192.168.1.128/25 (255.255.255.128) - IPs 192.168.1.129 to 192.168.1.254</li>
+                    </ul>
+                </div>
+                
+                <div class="terminal">
+                    # Calculate subnet information<br>
+                    $ ipcalc 192.168.1.0/25<br>
+                    Address:   192.168.1.0          11000000.10101000.00000001.0 0000000<br>
+                    Netmask:   255.255.255.128 = 25 11111111.11111111.11111111.1 0000000<br>
+                    Wildcard:  0.0.0.127            00000000.00000000.00000000.0 1111111<br>
+                    =><br>
+                    Network:   192.168.1.0/25       11000000.10101000.00000001.0 0000000<br>
+                    HostMin:   192.168.1.1          11000000.10101000.00000001.0 0000001<br>
+                    HostMax:   192.168.1.126        11000000.10101000.00000001.0 1111110<br>
+                    Broadcast: 192.168.1.127        11000000.10101000.00000001.0 1111111<br>
+                    Hosts/Net: 126                   Class C, Private Internet
+                </div>
+            </section>
+
+            <section id="network-protocols" class="content-section">
+                <h2><i class="fas fa-exchange-alt"></i> Network Protocols</h2>
+                
+                <h3><i class="fas fa-list-alt"></i> Common Network Protocols</h3>
+                
+                <table class="protocol-table">
+                    <tr>
+                        <th>Protocol</th>
+                        <th>Purpose</th>
+                        <th>Port</th>
+                    </tr>
+                    <tr>
+                        <td>HTTP</td>
+                        <td>Web browsing</td>
+                        <td>80</td>
+                    </tr>
+                    <tr>
+                        <td>HTTPS</td>
+                        <td>Secure web browsing</td>
+                        <td>443</td>
+                    </tr>
+                    <tr>
+                        <td>FTP</td>
+                        <td>File transfer</td>
+                        <td>20/21</td>
+                    </tr>
+                    <tr>
+                        <td>SSH</td>
+                        <td>Secure remote access</td>
+                        <td>22</td>
+                    </tr>
+                    <tr>
+                        <td>DNS</td>
+                        <td>Domain name resolution</td>
+                        <td>53</td>
+                    </tr>
+                    <tr>
+                        <td>DHCP</td>
+                        <td>Automatic IP assignment</td>
+                        <td>67/68</td>
+                    </tr>
+                </table>
+                
+                <h3><i class="fas fa-handshake"></i> TCP Three-Way Handshake</h3>
+                <p>The TCP three-way handshake establishes a reliable connection between two devices:</p>
+                <ol>
+                    <li><strong>SYN:</strong> Client sends a synchronization packet to the server</li>
+                    <li><strong>SYN-ACK:</strong> Server responds with synchronization-acknowledgment</li>
+                    <li><strong>ACK:</strong> Client sends acknowledgment to establish the connection</li>
+                </ol>
+                
+                <div class="terminal">
+                    # Example of TCP handshake in Wireshark<br>
+                    No.     Time        Source          Destination     Protocol Info<br>
+                    1 0.000000    192.168.1.100    93.184.216.34   TCP      59822 → 80 [SYN] Seq=0<br>
+                    2 0.025678    93.184.216.34    192.168.1.100   TCP      80 → 59822 [SYN, ACK] Seq=0 Ack=1<br>
+                    3 0.025789    192.168.1.100    93.184.216.34   TCP      59822 → 80 [ACK] Seq=1 Ack=1
+                </div>
+            </section>
+
+            <section id="security" class="content-section">
+                <h2><i class="fas fa-shield-alt"></i> Network Security</h2>
+                
+                <h3><i class="fas fa-user-secret"></i> Common Network Attacks</h3>
+                
+                <h4>Man-in-the-Middle (MitM) Attacks</h4>
+                <p>An attacker intercepts communication between two parties without their knowledge.</p>
+                
+                <h4>Denial of Service (DoS/DDoS)</h4>
+                <p>Attackers overwhelm a network or service with traffic, making it unavailable to legitimate users.</p>
+                
+                <h4>Packet Sniffing</h4>
+                <p>Capturing and analyzing network traffic to extract sensitive information like passwords.</p>
+                
+                <h3><i class="fas fa-lock"></i> Security Best Practices</h3>
+                <ul>
+                    <li>Use strong, unique passwords for all network devices</li>
+                    <li>Enable WPA2 or WPA3 encryption on wireless networks</li>
+                    <li>Keep firmware and software updated</li>
+                    <li>Disable unnecessary services and ports</li>
+                    <li>Use a firewall to filter incoming and outgoing traffic</li>
+                    <li>Implement network segmentation to limit breach impact</li>
+                </ul>
+            </section>
+
+            <section id="practical-commands" class="content-section">
+                <h2><i class="fas fa-terminal"></i> Practical Networking Commands</h2>
+                
+                <h3><i class="fas fa-desktop"></i> Network Configuration Commands</h3>
+                
+                <div class="os-comparison">
+                    <div class="os-box linux-box">
+                        <h4><i class="fab fa-linux"></i> Linux Commands</h4>
+                        <div class="linux-terminal">
+                            # Display network interface configuration<br>
+                            $ ifconfig<br>
+                            $ ip addr show<br>
+                            <br>
+                            # Display routing table<br>
+                            $ route -n<br>
+                            $ ip route show<br>
+                            <br>
+                            # Display ARP table<br>
+                            $ arp -a<br>
+                            $ ip neighbor show<br>
+                            <br>
+                            # Configure network interface<br>
+                            $ sudo ifconfig eth0 192.168.1.100 netmask 255.255.255.0<br>
+                            $ sudo ip addr add 192.168.1.100/24 dev eth0<br>
+                            <br>
+                            # Enable/disable interface<br>
+                            $ sudo ifconfig eth0 up<br>
+                            $ sudo ifconfig eth0 down<br>
+                            $ sudo ip link set eth0 up<br>
+                            $ sudo ip link set eth0 down
+                        </div>
+                    </div>
+                    
+                    <div class="os-box windows-box">
+                        <h4><i class="fab fa-windows"></i> Windows Commands</h4>
+                        <div class="windows-terminal">
+                            # Display IP configuration<br>
+                            > ipconfig<br>
+                            > ipconfig /all<br>
+                            <br>
+                            # Display routing table<br>
+                            > route print<br>
+                            <br>
+                            # Display ARP table<br>
+                            > arp -a<br>
+                            <br>
+                            # Release and renew IP address<br>
+                            > ipconfig /release<br>
+                            > ipconfig /renew<br>
+                            <br>
+                            # Flush DNS cache<br>
+                            > ipconfig /flushdns<br>
+                            <br>
+                            # Display DNS resolver cache<br>
+                            > ipconfig /displaydns
+                        </div>
+                    </div>
+                </div>
+                
+                <h3><i class="fas fa-network-wired"></i> Network Testing & Diagnostics</h3>
+                
+                <div class="os-comparison">
+                    <div class="os-box linux-box">
+                        <h4><i class="fab fa-linux"></i> Linux Commands</h4>
+                        <div class="linux-terminal">
+                            # Test connectivity<br>
+                            $ ping google.com<br>
+                            $ ping -c 4 8.8.8.8<br>
+                            <br>
+                            # Trace network path<br>
+                            $ traceroute google.com<br>
+                            $ tracepath google.com<br>
+                            <br>
+                            # Test DNS resolution<br>
+                            $ nslookup google.com<br>
+                            $ dig google.com<br>
+                            $ host google.com<br>
+                            <br>
+                            # Check open ports<br>
+                            $ netstat -tuln<br>
+                            $ ss -tuln<br>
+                            <br>
+                            # Check network statistics<br>
+                            $ netstat -s<br>
+                            $ ss -s
+                        </div>
+                    </div>
+                    
+                    <div class="os-box windows-box">
+                        <h4><i class="fab fa-windows"></i> Windows Commands</h4>
+                        <div class="windows-terminal">
+                            # Test connectivity<br>
+                            > ping google.com<br>
+                            > ping -n 4 8.8.8.8<br>
+                            <br>
+                            # Trace network path<br>
+                            > tracert google.com<br>
+                            > pathping google.com<br>
+                            <br>
+                            # Test DNS resolution<br>
+                            > nslookup google.com<br>
+                            > Resolve-DnsName google.com<br>
+                            <br>
+                            # Check open ports<br>
+                            > netstat -an<br>
+                            > Get-NetTCPConnection<br>
+                            <br>
+                            # Display network statistics<br>
+                            > netstat -s<br>
+                            > Get-NetStatistics
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tools" class="content-section">
+                <h2><i class="fas fa-tools"></i> Essential Networking Tools</h2>
+                
+                <h3><i class="fas fa-search"></i> Network Scanning and Discovery</h3>
+                
+                <div class="tool-card">
+                    <h4><i class="fas fa-network-wired"></i> Nmap</h4>
+                    <p><strong>Purpose:</strong> Network discovery and security auditing</p>
+                    <p><strong>Usage Examples:</strong></p>
+                    <div class="terminal">
+                        # Basic network scan<br>
+                        $ nmap -sn 192.168.1.0/24<br>
+                        <br>
+                        # Port scan with service detection<br>
+                        $ nmap -sV 192.168.1.1<br>
+                        <br>
+                        # OS detection<br>
+                        $ nmap -O 192.168.1.1<br>
+                        <br>
+                        # Aggressive scan (combines multiple techniques)<br>
+                        $ nmap -A 192.168.1.1
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <h4><i class="fas fa-traffic-light"></i> Wireshark</h4>
+                    <p><strong>Purpose:</strong> Network protocol analyzer for troubleshooting and analysis</p>
+                    <p><strong>Usage Examples:</strong></p>
+                    <div class="terminal">
+                        # Capture packets on specific interface<br>
+                        $ wireshark -i wlan0<br>
+                        <br>
+                        # Filter HTTP traffic only<br>
+                        http<br>
+                        <br>
+                        # Filter traffic to/from specific IP<br>
+                        ip.addr == 192.168.1.100<br>
+                        <br>
+                        # Follow TCP stream to see complete conversation<br>
+                        Right-click packet → Follow → TCP Stream
+                    </div>
+                </div>
+            </section>
+
+            <section id="troubleshooting" class="content-section">
+                <h2><i class="fas fa-bug"></i> Network Troubleshooting</h2>
+                
+                <h3><i class="fas fa-search"></i> Common Network Issues</h3>
+                
+                <h4>Connectivity Problems</h4>
+                <ul>
+                    <li><strong>No internet access:</strong> Check physical connections, router status, ISP outage</li>
+                    <li><strong>Intermittent connectivity:</strong> Check for interference, update drivers, check for overheating</li>
+                    <li><strong>Slow speeds:</strong> Check for bandwidth hogs, test with different devices</li>
+                </ul>
+                
+                <h4>Wireless-Specific Issues</h4>
+                <ul>
+                    <li><strong>Weak signal:</strong> Reposition router, check for obstacles, consider range extenders</li>
+                    <li><strong>Interference:</strong> Change Wi-Fi channel, move away from other electronics</li>
+                    <li><strong>Authentication problems:</strong> Verify password, check security settings</li>
+                </ul>
+                
+                <h3><i class="fas fa-wrench"></i> Troubleshooting Methodology</h3>
+                <ol>
+                    <li>Identify the problem scope (single device vs entire network)</li>
+                    <li>Check physical connections and hardware status</li>
+                    <li>Verify IP configuration and connectivity</li>
+                    <li>Test DNS resolution</li>
+                    <li>Check for firewall or security software blocking connections</li>
+                    <li>Update drivers and firmware</li>
+                </ol>
+                
+                <div class="terminal">
+                    # Basic network troubleshooting commands<br>
+                    $ ping google.com                 # Test connectivity<br>
+                    $ ip addr show                    # Check IP configuration<br>
+                    $ nslookup google.com             # Test DNS resolution<br>
+                    $ traceroute google.com           # Trace network path<br>
+                    $ netstat -tuln                   # Check listening ports<br>
+                    $ iwconfig                       # Check wireless settings
+                </div>
+            </section>
+
+            <section id="advanced" class="content-section">
+                <h2><i class="fas fa-rocket"></i> Advanced Networking Concepts</h2>
+                
+                <h3><i class="fas fa-sitemap"></i> VLANs (Virtual LANs)</h3>
+                <p>VLANs allow you to segment a physical network into multiple logical networks, improving security and performance.</p>
+                
+                <div class="example-box">
+                    <h4>VLAN Configuration Example:</h4>
+                    <p>A company might create separate VLANs for:</p>
+                    <ul>
+                        <li>VLAN 10: Management (IT staff only)</li>
+                        <li>VLAN 20: Employees</li>
+                        <li>VLAN 30: Guests</li>
+                        <li>VLAN 40: IoT Devices</li>
+                    </ul>
+                </div>
+                
+                <h3><i class="fas fa-route"></i> Routing Protocols</h3>
+                <p>Routing protocols determine how routers share information about network paths:</p>
+                <ul>
+                    <li><strong>OSPF (Open Shortest Path First):</strong> Link-state protocol used in large enterprise networks</li>
+                    <li><strong>BGP (Border Gateway Protocol):</strong> Path-vector protocol used between ISPs</li>
+                    <li><strong>EIGRP (Enhanced Interior Gateway Routing Protocol):</strong> Cisco proprietary hybrid protocol</li>
+                </ul>
+                
+                <h3><i class="fas fa-cloud"></i> Software-Defined Networking (SDN)</h3>
+                <p>SDN separates the network control plane from the data plane, allowing centralized management and programmability.</p>
+                
+                <h4>SDN Benefits:</h4>
+                <ul>
+                    <li>Centralized network management</li>
+                    <li>Dynamic resource allocation</li>
+                    <li>Automated provisioning</li>
+                    <li>Improved security through micro-segmentation</li>
+                </ul>
+            </section>
+
+            <section id="labs" class="content-section">
+                <h2><i class="fas fa-flask"></i> Practical Labs</h2>
+                
+                <h3><i class="fas fa-wifi"></i> Lab 1: Setting Up a Wireless Home Network</h3>
+                <p><strong>Objective:</strong> Configure a secure wireless home network with proper security settings.</p>
+                
+                <h4>Steps:</h4>
+                <ol>
+                    <li>Access your router's administration panel (usually 192.168.1.1 or 192.168.0.1)</li>
+                    <li>Change the default admin password</li>
+                    <li>Configure wireless settings:
+                        <ul>
+                            <li>Set SSID (network name) to something unique but not personally identifiable</li>
+                            <li>Enable WPA2 or WPA3 security</li>
+                            <li>Use a strong passphrase (at least 12 characters with mix of letters, numbers, symbols)</li>
+                            <li>Select the appropriate wireless channel (use 1, 6, or 11 for 2.4GHz to minimize interference)</li>
+                        </ul>
+                    </li>
+                    <li>Enable firewall and disable WPS (Wi-Fi Protected Setup) if possible</li>
+                    <li>Test connectivity from multiple devices</li>
+                </ol>
+                
+                <h3><i class="fas fa-shield-alt"></i> Lab 2: Analyzing Network Traffic with Wireshark</h3>
+                <p><strong>Objective:</strong> Capture and analyze network traffic to understand communication patterns.</p>
+                
+                <h4>Steps:</h4>
+                <ol>
+                    <li>Install Wireshark on your system</li>
+                    <li>Start a capture on your network interface</li>
+                    <li>Generate some network traffic (browse a website, use an app)</li>
+                    <li>Apply filters to focus on specific traffic:
+                        <ul>
+                            <li><span class="command">http</span> - Show only HTTP traffic</li>
+                            <li><span class="command">dns</span> - Show only DNS queries</li>
+                            <li><span class="command">ip.addr == 8.8.8.8</span> - Traffic to/from Google DNS</li>
+                        </ul>
+                    </li>
+                    <li>Examine packet details to understand the communication flow</li>
+                    <li>Look for any unencrypted data being transmitted</li>
+                </ol>
+                
+                <h3><i class="fas fa-search"></i> Lab 3: Network Mapping with Nmap</h3>
+                <p><strong>Objective:</strong> Discover devices and services on your network.</p>
+                
+                <h4>Steps:</h4>
+                <ol>
+                    <li>Determine your network range (<span class="command">ip addr show</span> or <span class="command">ipconfig</span>)</li>
+                    <li>Scan for active hosts: <span class="command">nmap -sn 192.168.1.0/24</span></li>
+                    <li>Perform service detection on discovered hosts: <span class="command">nmap -sV 192.168.1.1</span></li>
+                    <li>Identify operating systems: <span class="command">nmap -O 192.168.1.1</span></li>
+                    <li>Create a network map of all discovered devices and services</li>
+                </ol>
+                
+                <div class="note">
+                    <p><strong>Ethical Note:</strong> Only perform these scans on networks you own or have explicit permission to test. Unauthorized scanning may be illegal.</p>
+                </div>
+            </section>
+
+            <footer>
+                <p>Complete Wireless Networking Course | By Aryan Giri</p>
+                <p style="margin-top: 10px; font-size: 0.9rem;">For educational purposes only. Practice ethical hacking responsibly.</p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        
+        // Check for saved theme preference or default to light theme
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        // Apply the saved theme on page load
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeIcon.className = 'fas fa-sun';
+            themeText.textContent = 'Light Mode';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            
+            if (document.body.classList.contains('dark-theme')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Light Mode';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Dark Mode';
+            }
+        });
+        
+        // Menu Toggle Functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close sidebar on mobile after clicking a link
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('active');
+                    }
+                    
+                    // Update active category
+                    document.querySelectorAll('.category-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.parentElement.classList.add('active');
+                }
+            });
+        });
+        
+        // Update active category based on scroll position
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.content-section');
+            const navLinks = document.querySelectorAll('.category-item a');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.parentElement.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.parentElement.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
